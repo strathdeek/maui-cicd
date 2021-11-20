@@ -23,7 +23,6 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
         with:
           vs-prerelease: true
-          vswhere-path: 'C:\path\to\your\tools\'
           
       - name:  install .NET
         shell: pwsh
