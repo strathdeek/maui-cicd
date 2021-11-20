@@ -35,14 +35,10 @@ jobs:
 
       # temporary fix: run this script to manually patch the vs dlls
       # https://github.com/dotnet/runtime/issues/59619#issuecomment-929007782
-          
+
       - name:  patch vs
         shell: pwsh
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "https://github.com/dotnet/maui/blob/2c1b919cf5132262a2328adba59a67141d0f12d0/eng/scripts/patch-vs.ps1" -OutFile patch-vs.ps1
-          & .\patch-vs.ps1
-      
+        run: powershell .\build\patch-vs.ps1
 
       
       - name: Install and Run maui-check Tool
