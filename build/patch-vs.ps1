@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
 if ($path) {
-  & $MSBuild = $path
+  $MSBuild = $path
 }
 
 $msbuildRoot = Split-Path -Parent $MSBuild
