@@ -14,7 +14,7 @@ on:
 
 env:
     APPCENTER_APPNAME_MAC: k-strathdee/maui-cicd-mac
-    APPCENTER_APPNAME_ANDROID: k-strathdee/maui-cicd-android
+    APPCENTER_APPNAME_ANDROID: k-strathdee/maui-cicd
     APPCENTER_APPNAME_IOS: k-strathdee/maui-cicd-ios
     APPCENTER_GROUP: Collaborators
     APP_NAME: maui-cicd
@@ -69,9 +69,8 @@ jobs:
           appcenter distribute release -f src/bin/Release/**/*-Signed.apk \
                                        -g ${{env.APPCENTER_GROUP}} \
                                        --app ${{env.APPCENTER_APPNAME_ANDROID}} \
-                                       --debug \
                                        --build-version 1 \
-                                       --build-number 3
+                                       --build-number ${{github.run_number}}
       
       # TODO: sign macOS app - use dotnet publish? research pkg vs dmg
       - name: Build macOS
@@ -102,9 +101,8 @@ jobs:
                                   -f ${{env.APP_NAME}} \
                                   -g ${{env.APPCENTER_GROUP}} \
                                   --app ${{env.APPCENTER_APPNAME_MAC}} \
-                                  --debug \
                                   --build-version 1 \
-                                  --build-number 3 
+                                  --build-number ${{github.run_number}} 
         
       - name: Build iOS
         shell: bash
