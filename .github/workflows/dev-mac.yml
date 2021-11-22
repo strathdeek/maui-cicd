@@ -13,6 +13,11 @@ on:
   workflow_dispatch:
 
 env:
+    APPCENTER_APPNAME_MAC: k-strathdee/maui-cicd-mac
+    APPCENTER_APPNAME_ANDROID: k-strathdee/maui-cicd-android
+    APPCENTER_APPNAME_IOS: k-strathdee/maui-cicd-ios
+    APPCENTER_GROUP: Collaborators
+    APP_NAME: maui-cicd
     DOTNETVERSION:  6.0.100
     DOTNETROOT: /usr/local/share/dotnet/
     DOTNETTOOLS: ~/.dotnet/tools
@@ -47,24 +52,61 @@ jobs:
         run: |
           dotnet tool update --global redth.net.maui.check &&
           maui-check --ci --non-interactive --fix --skip androidsdk --skip xcode --skip vswin --skip vsmac --skip edgewebview2
-      - name: Build app
+      
+      - name: Authenticate with App Center
         shell: bash
         run: |
-          dotnet build src -f net6.0-android &&
-          dotnet build src -f net6.0-ios &&
+          appcenter login --token ${{secrets.APP_CENTER_TOKEN}}
+      
+      - name: Build android
+        shell: bash
+        run: |
+          dotnet build src -f net6.0-android
+
+      - name: Upload android to App Center
+        shell: bash
+        run: |
+          appcenter distribute release -f src\bin\Release\**\*-Signed.apk \
+                                       -g ${{env.APPCENTER_GROUP}} \
+                                       --app ${{env.APPCENTER_APPNAME_ANDROID}} \
+                                       --debug \
+                                       --build-version 1 \
+                                       --build-number 3
+      
+      # TODO: sign macOS app - use dotnet publish? research pkg vs dmg
+      - name: Build macOS
+        shell: bash
+        run: |
           dotnet build src -f net6.0-maccatalyst
 
-      - name: upload android build to App Center
-        uses: wzieba/AppCenter-Github-Action@v1
-        with:
-          appName: maui-cicd
-          token: ${{secrets.APP_CENTER_TOKEN}}
-          file: src\bin\Release\**\*-Signed.apk
-          debug: false
-      - name: upload mac build to App Center
-        uses: wzieba/AppCenter-Github-Action@v1
-        with:
-          appName: maui-cicd
-          token: ${{secrets.APP_CENTER_TOKEN}}
-          file: src/bin/Release/net6.0-maccatalyst/maccatalyst-x64/maui-cicd.app/Contents/MacOS/maui-cicd
-          debug: false
+      -name: package macOS
+        shell: bash
+        run: |
+          hdiutil create \
+                    -fs HFS+ \
+                    -srcfolder "src/bin/Release/net6.0-maccatalyst/maccatalyst-x64/maui-cicd.app" \
+                    -volname "${{env.APP_NAME}}" "${{env.APP_NAME}}"
+      
+      # TODO: notarize macOS app
+      # - name: Notarize app
+      #   run: |
+      #     npx notarize-cli --file "build/$PRODUCT_MODULE_NAME.dmg"
+      #   env:
+      #     NOTARIZE_USERNAME: ${{ secrets.NOTARIZE_USERNAME }}
+      #     NOTARIZE_PASSWORD: ${{ secrets.NOTARIZE_PASSWORD }}
+
+      - name: upload macOS to App Center
+        shell: bash
+        run: |
+          appcenter distribute release \
+                                  -f src/bin/Debug/net6.0-maccatalyst/maccatalyst-x64/maui-cicd-1.pkg \
+                                  -g ${{env.APPCENTER_GROUP}} \
+                                  --app ${{env.APPCENTER_APPNAME}} \
+                                  --debug \
+                                  --build-version 1 \
+                                  --build-number 3 
+        
+      - name: Build iOS
+        shell: bash
+        run: |
+          dotnet build src -f net6.0-ios

@@ -48,10 +48,6 @@ jobs:
       - name: Restore nuget packages
         run: dotnet restore src/maui-cicd.sln
 
-      - name: Build android debug
-        shell: pwsh
-        run: dotnet build src -f net6.0-android -c Debug
-
       - name: Build windows debug
         shell: pwsh
         run: dotnet build src -f net6.0-windows10.0.19041 -c Debug
@@ -61,9 +57,3 @@ jobs:
 
       - name: Build WinUI3 Release
         run: msbuild src/maui-cicd.sln -p:Configuration=Release
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: artifacts-windows
-          path: |
-            src\bin\Debug\**\*-Signed.apk
