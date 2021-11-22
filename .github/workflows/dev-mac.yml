@@ -79,7 +79,7 @@ jobs:
         run: |
           dotnet build src -f net6.0-maccatalyst
 
-      -name: package macOS
+      - name: package macOS
         shell: bash
         run: |
           hdiutil create \
