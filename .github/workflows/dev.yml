@@ -48,20 +48,20 @@ jobs:
           & maui-check --ci --non-interactive --fix --skip androidsdk --skip xcode --skip vswin --skip vsmac --skip edgewebview2
 
       - name: Restore nuget packages
-        run: dotnet restore maui-cicd.sln
+        run: dotnet restore src/maui-cicd.sln
 
       - name: Build android debug
         shell: pwsh
-        run: dotnet build -f net6.0-android -c Debug
+        run: dotnet build src -f net6.0-android -c Debug
 
       - name: Build WinUI3 Debug
-        run: msbuild maui-cicd.sln -restore -p:Configuration=Debug
+        run: msbuild src/maui-cicd.sln -restore -p:Configuration=Debug
 
       - name: Build WinUI3 Release
-        run: msbuild maui-cicd.sln -p:Configuration=Release
+        run: msbuild src/maui-cicd.sln -p:Configuration=Release
 
       - uses: actions/upload-artifact@v2
         with:
           name: artifacts-windows
           path: |
-            src\WeatherTwentyOne\bin\Debug\**\*-Signed.apk
+            src\bin\Debug\**\*-Signed.apk
