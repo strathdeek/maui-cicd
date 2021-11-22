@@ -96,7 +96,7 @@ jobs:
         shell: bash
         run: |
           appcenter distribute release \
-                                  -f ${{env.APP_NAME}} \
+                                  -f ${{env.APP_NAME}}.dmg \
                                   -g ${{env.APPCENTER_GROUP}} \
                                   --app ${{env.APPCENTER_APPNAME_MAC}} \
                                   --build-version 1 \
