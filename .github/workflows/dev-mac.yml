@@ -52,7 +52,8 @@ jobs:
         run: |
           dotnet build src -f net6.0-android &&
           dotnet build src -f net6.0-ios &&
-          dotnet build src -f net6.0-maccatalyst
+          dotnet build src -f net6.0-maccatalyst &&
+          ls -la $GITHUB_WORKSPACE\artifacts
       # dotnet build src/WeatherTwentyOne/WeatherTwentyOne.csproj -p:Configuration=Debug -p:TargetFramework=net6.0-maccatalyst
 
       # - name: Build WinUI3 Debug

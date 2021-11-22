@@ -21,8 +21,6 @@ jobs:
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-prerelease: true
           
       - name:  install .NET
         shell: pwsh
@@ -53,6 +51,10 @@ jobs:
       - name: Build android debug
         shell: pwsh
         run: dotnet build src -f net6.0-android -c Debug
+
+      - name: Build windows debug
+        shell: pwsh
+        run: dotnet build src -f net6.0-windows10.0.19041 -c Debug
 
       - name: Build WinUI3 Debug
         run: msbuild src/maui-cicd.sln -restore -p:Configuration=Debug
