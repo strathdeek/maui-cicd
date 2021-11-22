@@ -68,9 +68,7 @@ jobs:
         run: |
           appcenter distribute release -f src/bin/Release/**/*-Signed.apk \
                                        -g ${{env.APPCENTER_GROUP}} \
-                                       --app ${{env.APPCENTER_APPNAME_ANDROID}} \
-                                       --build-version 1 \
-                                       --build-number ${{github.run_number}}
+                                       --app ${{env.APPCENTER_APPNAME_ANDROID}}
       
       # TODO: sign macOS app - use dotnet publish? research pkg vs dmg
       - name: Build macOS
