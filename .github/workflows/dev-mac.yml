@@ -53,6 +53,17 @@ jobs:
           dotnet tool update --global redth.net.maui.check &&
           maui-check --ci --non-interactive --fix --skip androidsdk --skip xcode --skip vswin --skip vsmac --skip edgewebview2
       
+      - name: Run Unit Tests
+        shell: bash
+        run: |
+          dotnet test --logger trx --results-directory "TestResults-${{github.run_number}}"
+      
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-results-${{ github.run_number }}
+          path: TestResults-${{ github.run_number }}
+
       - name: Authenticate with App Center
         shell: bash
         run: |
