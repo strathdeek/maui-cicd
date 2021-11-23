@@ -19,5 +19,6 @@ namespace maui_cicd
 
 			return builder.Build();
 		}
+
 	}
 }
