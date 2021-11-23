@@ -27,7 +27,10 @@
 		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
 	</PropertyGroup>
-
+  <ItemGroup Condition="'$(TargetFramework)' != 'net6.0'">
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+  
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon
@@ -55,5 +58,5 @@
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
-	
+
 </Project>
