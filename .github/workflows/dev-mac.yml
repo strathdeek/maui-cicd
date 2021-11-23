@@ -77,7 +77,7 @@ jobs:
       - name: Upload android to App Center
         shell: bash
         run: |
-          appcenter distribute release -f src/bin/Release/**/*-Signed.apk \
+          appcenter distribute release -f src/maui-cicd/bin/Release/**/*-Signed.apk \
                                        -g ${{env.APPCENTER_GROUP}} \
                                        --app ${{env.APPCENTER_APPNAME_ANDROID}}
       

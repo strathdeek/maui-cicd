@@ -15,7 +15,7 @@ namespace maui_cicd
 
 		private void OnCounterClicked(object sender, EventArgs e)
 		{
-			count++;
+			count+=2;
 			CounterLabel.Text = $"Current count: {count}";
 
 			SemanticScreenReader.Announce(CounterLabel.Text);
