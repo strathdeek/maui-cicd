@@ -18,6 +18,7 @@ env:
     APPCENTER_APPNAME_IOS: k-strathdee/maui-cicd-ios
     APPCENTER_GROUP: Collaborators
     APP_NAME: maui-cicd
+    APP_DIR: src/maui-cicd
     DOTNETVERSION:  6.0.100
     DOTNETROOT: /usr/local/share/dotnet/
     DOTNETTOOLS: ~/.dotnet/tools
@@ -92,7 +93,7 @@ jobs:
         run: |
           hdiutil create \
                     -fs HFS+ \
-                    -srcfolder "src/bin/Release/net6.0-maccatalyst/maccatalyst-x64/maui-cicd.app" \
+                    -srcfolder "src/maui-cicd/bin/Release/net6.0-maccatalyst/maccatalyst-x64/maui-cicd.app" \
                     -volname "${{env.APP_NAME}}" "${{env.APP_NAME}}"
       
       # TODO: notarize macOS app
